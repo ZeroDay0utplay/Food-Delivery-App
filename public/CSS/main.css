@@ -1,0 +1,117 @@
+body{
+    background-color: white;
+}
+
+.appel{
+    color: aliceblue;
+    padding-top: 20px;
+    height: 50px;
+    width: 100%;
+    background-color: orange;
+}
+
+.red_msg{
+    border-radius: 10px;
+    padding-top: 20px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: aliceblue;
+    background-color: rgb(245, 94, 94);
+    width: 300px;
+    height: 50px;
+  }
+  
+.green_msg{
+    border-radius: 10px;
+    padding-top: 20px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: aliceblue;
+    background-color: rgb(123, 236, 103);
+    width: 300px;
+    height: 70px;
+}
+
+.prod{
+    margin-bottom: 30px;
+}
+
+.sm{
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+}
+
+.instagram{
+    margin-left: -30%;
+}
+
+.spc{
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-bottom: 30px;
+}
+
+.btn{
+    margin-left: 0;
+    width: 95%;
+    height: 60px;
+    background-color: orange;
+    border-color: orange;
+}
+
+.inp{
+    margin-left: 10px;
+}
+
+.prod{
+    font-size: 300%;
+    font-family: Segoe Script;
+    margin-top: 35px;
+    margin-bottom: 50px;
+}
+
+.copyright{
+    margin-top: 15%;
+}
+
+.mama{
+    margin-bottom: 10%;
+    border-radius: 5%;
+    width: 95%;
+    background-color: white;
+}
+
+.add{
+    width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 10%;
+    color: white;
+    background-color: rgb(29, 166, 29);
+    border-color: rgb(29, 166, 29);
+}
+
+.home{
+    width: 50px;
+    height: 50px;
+    margin-top: 10%;
+    margin-left: 5%;
+    margin-bottom: 20%;
+}
+
+.cart{
+    width: 50px;
+    height: 50px;
+    margin-top: 10%;
+    margin-left: 60%;
+    margin-right: 5%;
+    margin-bottom: 20%;
+}
+
+
+.tt_resto{
+    text-align: center;
+}

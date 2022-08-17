@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/bootstrap.css">
+    <link rel="stylesheet" href="CSS/resto.css">
+    <link rel="stylesheet" href="CSS/side_bar.css">
+    <script src="JS/side_bar.min.js"></script>
+    <title>Resto</title>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <center><div class="appel">Pour commander, Appelez-nous : 56 66 52 14 ☎️</div></center> 
+
+        <%- include("../partials/side_bar.ejs") -%>
+
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex flex-column">
+            </div>
+            <div class="ml-auto btn"><span class="fas fa-cog"></span></div>
+        </div>  
+        <div id="table" class="bg-white rounded">
+            </div>
+            <hr>
+            <% for (let i=0; i<resto_prods.length; i++) {%>
+                <div class="table-responsive">
+                    <form action="/resto" method="post">
+                        <input type="hidden" name="prod_name" value=<%= resto_prods[i].prod_name %>>
+                        <button type="submit" id="prod_name" style="border: 0; background-color: #f4f4f4;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-uppercase header">item</th>
+                                        <th scope="col" class="text-uppercase"></th>
+                                        <th scope="col" class="text-uppercase"></th>
+                                        <th scope="col" class="text-uppercase">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="item">
+                                            <div class="d-flex align-items-start">
+                                                <img src="src/Food/<%= resto_prods[i].prod_name %>.jpg" style="width: 50%; height: 50%; margin-right: 10%;">
+                                                <div>
+                                                    <%= resto_prods[i].prod_name %>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <div class="text-muted"><%= resto_prods[i].description %></div>
+                                                        <div class="text-muted" style="margin-top: 10px;">☆ <%= resto_prods[i].rating %></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                        <td class="d-flex flex-column">
+                                        </td>
+                                        <td class="font-weight-bold">
+                                            $<%= resto_prods[i].price %>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </button>
+                    </form>
+                </div>
+            <% } %>
+            <hr class="items">
+        </div>
+    </div>
+
+    <%- include("../partials/footer.ejs") -%>
+</body>
+</html>

@@ -1,0 +1,76 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Tac Tac</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/sign-in/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="CSS/bootstrap-login.min.css">
+    <link href="CSS/hs.css" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+
+    <link rel="apple-touch-icon" href="/docs/5.2/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" href="/docs/5.2/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/docs/5.2/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="manifest" href="/docs/5.2/assets/img/favicons/manifest.json">
+    <link rel="mask-icon" href="/docs/5.2/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
+    <link rel="icon" href="/docs/5.2/assets/img/favicons/favicon.ico">
+    <meta name="theme-color" content="#712cf9">
+    
+    <!-- Custom styles for this template -->
+    <link href="CSS/signup.css" rel="stylesheet">
+    <script>
+        const token = await res.json();
+        console.log(token);
+        document.cookie = `token=${token}`
+    </script>
+  </head>
+
+  <body class="text-center">
+
+    <main class="form-signin w-100 m-auto">
+    <form method="post" action="/sign_in">
+        <% if (login === "wrong_phone") {%>
+            <div class="alert alert-danger" style="margin-top: 20px;">
+                <center>Invalid Phone Number !</center>
+            </div>
+        <%}%>
+        <% if (login === "wrongpwd") {%>
+            <div class="alert alert-danger" style="margin-top: 20px;">
+                <center>Wrong Password !</center>
+            </div>
+        <%}%>
+        <% if (login === "alert alert-success") {%>
+            <div class="alert alert-success" style="margin-top: 20px;">
+                <center>Login Successfully.</center>
+            </div>
+        <%}%>
+        <img class="mb-4 logo" src="src/tac.png">
+        <h1 class="h3 mb-3 fw-normal tit">Sign In</h1>
+
+        <div class="form-floating padd">
+            <input type="tel" class="form-control" id="floatingInput" placeholder="+216 56 66 52 14" name="phone">
+            <label for="floatingInput">Phone Number</label>
+        </div>
+        <a href="forgot_pwd.html" class="f_pwd">Forgot your password?</a>
+        <div class="form-floating padd">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="pwd">
+            <label for="floatingPassword">Password</label>
+            <div class="eye">
+                <i class="bi bi-eye-slash" id="togglePassword"></i>
+            </div>
+        </div>
+
+        <p class="space_elem">New to Tac Tac Delivery? <a href="sign_up" class="si">Sign Up</a></p>
+        <button class="w-100 btn btn-lg btn-primary su_btn" type="submit">Log In</button>
+        <%- include("../partials/footer.ejs") -%>
+
+    </form>
+    </main>
+    <script src="JS/index.js"></script>
+    <script src="JS/sweetalert.min.js"></script>
+  </body>
+</html>
