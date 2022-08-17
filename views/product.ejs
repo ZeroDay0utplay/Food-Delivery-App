@@ -148,17 +148,59 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li>
                 <div style="white-space: nowrap;"> 
-                        <input class="inp" type="checkbox" class="inp" value = "1" name="frite" style="display: inline-block;">  
+                        <input class="inp" type="checkbox" class="inp" value = "Avec Frites" name="frite" style="display: inline-block;" checked="true">  
                         <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Avec Frites</p>
                 </div>
             </li>
             <li>
                 <div style="white-space: nowrap;"> 
-                    <input type="checkbox" class="inp" name="frite" value="0" style="display: inline-block;">  
+                    <input type="checkbox" class="inp" name="frite" value="Sans Frites" style="display: inline-block;">  
                     <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Sans Frites</p>
                 </div>
             </li>
         </div>
+
+        <% if (produit === "Malawi") {%>
+            <div class="dropdown spc">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Pate
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+                    <div style="white-space: nowrap;"> 
+                            <input class="inp" type="checkbox" class="inp" value = "Double Pate" name="pate" style="display: inline-block;">  
+                            <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Double Pate</p>
+                    </div>
+                </li>
+            </div>
+        <%}%>
+
+        <% if (produit === "Pizza") {%>
+            <div class="dropdown spc">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Size
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+                    <div style="white-space: nowrap;"> 
+                            <input class="inp" type="checkbox" class="inp" value = "Mini" name="size" style="display: inline-block;" checked="true">  
+                            <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Mini</p>
+                    </div>
+                </li>
+                <li>
+                    <div style="white-space: nowrap;"> 
+                            <input class="inp" type="checkbox" class="inp" value = "Moyenne" name="size" style="display: inline-block;">  
+                            <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Moyenne</p>
+                    </div>
+                </li>
+                <li>
+                    <div style="white-space: nowrap;"> 
+                        <input type="checkbox" class="inp" name="size" value="Large" style="display: inline-block;">  
+                        <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Large</p>
+                    </div>
+                </li>
+            </div>
+        <%}%>
         
         <div>
             <button class="btn add" type="submit">Ajouter la commande</button>

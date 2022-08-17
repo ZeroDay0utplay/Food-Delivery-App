@@ -1,5 +1,12 @@
 const prodSchema = {
-    "phone_number": Number, "prod": String, "ingredient": [String], "sauces": Map, "salades": Map
+    "phone_number": Number,
+    "prod": String,
+    "ingredient": [String],
+    "sauces": Map,
+    "salades": Map,
+    "Frites": String,
+    "Size": String,
+    "Pate": String
 };
 
 const userSchema = {

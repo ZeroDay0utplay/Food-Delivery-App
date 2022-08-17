@@ -158,11 +158,13 @@ app.post("/product", auth.authorization, (req, res) => {
     salades["tomate"] = prod_body.tomate;
     salades["laitue"] = prod_body.laitue;
 
-    let components = {"phone_number": req.phone_number, "prod": prod_name,"ingredient": ingredients, "sauces": sauces, "salades": salades};
+    console.log(prod_body.frite);
 
-    components["frite"] = "Avec Frite";
+    let components = {"phone_number": req.phone_number, "prod": prod_name,"ingredient": ingredients, "sauces": sauces, "salades": salades, "Frites": prod_body.frite};
 
-    if (prod_body.frite === "0") components["frite"] = "Sans Frite";
+    if (prod_name === "Malawi") components["Pate"] = prod_body.pate;
+    if (prod_name === "Pizza") components["Size"] = prod_body.size;
+
 
     ingred = (ingredients.length === 0) ?  "no_ing" : "success";
     res.render("product", {produit: prod_name, ing: ingred});
