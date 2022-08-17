@@ -6,7 +6,8 @@ const prodSchema = {
     "salades": Map,
     "Frites": String,
     "Size": String,
-    "Pate": String
+    "Pate": String,
+    "price": Number
 };
 
 const userSchema = {
@@ -24,8 +25,10 @@ const cmdSchema = {
 
 const prod_priceSchema = {
     "prod_name": String,
-    "ingredient": String,
-    "price": Number
+    "ingredient": [String],
+    "price": Number,
+    "Size": String,
+    "Pate": String
 }
 
 

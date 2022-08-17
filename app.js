@@ -66,7 +66,7 @@ app.get("/product", auth.authorization, (req, res) => {
 })
 
 app.get("/cart", auth.authorization, (req, res) => {
-    Prod.find({"phone_number": req.phone_number}).then(data => {    
+    Prod.find({"phone_number": req.phone_number}).then(data => { 
         res.render("cart", {cmd_sub: "", prods: data});
     });
 })
@@ -158,23 +158,27 @@ app.post("/product", auth.authorization, (req, res) => {
     salades["tomate"] = prod_body.tomate;
     salades["laitue"] = prod_body.laitue;
 
-    console.log(prod_body.frite);
+    pate = (prod_name === "Malawi") ? ((prod_body.pate === undefined) ? "": prod_body.pate) : "";
+    size = (prod_name === "Pizza") ? prod_body.size : "";
 
-    let components = {"phone_number": req.phone_number, "prod": prod_name,"ingredient": ingredients, "sauces": sauces, "salades": salades, "Frites": prod_body.frite};
+    console.log(prod_name, ingredients, pate);
+    Price.find({"prod_name": prod_name, "ingredient": ingredients, "Size": size, "Pate": pate}).then(d => {
+        console.log(d);
+        let prod_price = d[0].price;
+        let components = {"phone_number": req.phone_number, "prod": prod_name,"ingredient": ingredients, "sauces": sauces, "salades": salades, "Frites": prod_body.frite, "Size": size, "Pate": pate, "price": prod_price};
+        
+        
+        ingred = (ingredients.length === 0) ?  "no_ing" : "success";
+        res.render("product", {produit: prod_name, ing: ingred});
+        
+        if (ingred === "success"){
+            const prod = new Prod(components); 
+            prod.save();
+        }
+        
+        ingred = ""; // for removing succ/err msg for a new command
+    })
 
-    if (prod_name === "Malawi") components["Pate"] = prod_body.pate;
-    if (prod_name === "Pizza") components["Size"] = prod_body.size;
-
-
-    ingred = (ingredients.length === 0) ?  "no_ing" : "success";
-    res.render("product", {produit: prod_name, ing: ingred});
-    
-    if (ingred === "success"){
-        const prod = new Prod(components); 
-        prod.save();
-    }
-    
-    ingred = ""; // for removing succ/err msg for a new command
 
 })
 
