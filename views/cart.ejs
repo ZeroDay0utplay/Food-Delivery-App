@@ -13,12 +13,12 @@
         <div class="card">
             <center><div class="appel">Pour commander, Appelez-nous : 56 66 52 14 ☎️</div></center>
             <% if (cmd_sub === "submitted") {%>
-                <div class="alert alert-success" style="margin-top: 20px;">
+                <div class="alert alert-success alert-dismissible" style="margin-top: 20px;">
                     <center>Your command has been submitted Successfully.</center>
                 </div>
             <%}%>
             <% if (cmd_sub === "delete_prod") {%>
-                <div class="alert alert-warning" style="margin-top: 20px;">
+                <div class="alert alert-warning alert-dismissible" style="margin-top: 20px;">
                     <center>Product has been removed</center>
                 </div>
             <%}%>
@@ -79,7 +79,7 @@
                     <div class="col">TOTAL PRICE</div>
                     <div class="col text-right total">&dollar; 0.00</div>
                 </div>
-                <button type="submit" class="btn" style="background-color: orange; border-color: orange;">SUBMIT COMMAND</button>
+                <button type="submit" class="btn" id="clk" style="background-color: orange; border-color: orange;">SUBMIT COMMAND</button>
             </div>
         </div>
             </form>

@@ -23,12 +23,12 @@
     <!-- <center><h3 class="prod"><%= produit %></h3></center> -->
     
     <% if (ing === "no_ing") {%>
-        <div class="alert alert-danger">
+        <div class="alert alert-danger alert-dismissible">
             <center>Please specify an ingredient !</center>
         </div>
     <%}%>
     <% if (ing === "success") {%>
-        <div class="alert alert-success">
+        <div class="alert alert-success alert-dismissible">
             <p><center>Your command has been submitted</center></p>
             <center><p style="margin-top: 8px;">Successfully</p></center>
         </div>
@@ -39,7 +39,7 @@
     
     <center><img src="src/Food/<%= produit %>.jpg" class="mama"></center>
 	
-    <form action="/product" method="post">
+    <form action="/product" method="post" id="prod_form">
         <input type="hidden" name="prod_name" value=<%=produit%>>
             
         <div class="dropdown spc">

@@ -7,5 +7,6 @@ document.addEventListener("click", (e) => {
     nbClicks++;
     nbClicks%=2;
     document.getElementsByClassName("alert")[0].style.display = (nbClicks) ? "none" : "block";
+    document.getElementById("prod_form").style.display = (nbClicks) ? "none" : "block";
   }
 })

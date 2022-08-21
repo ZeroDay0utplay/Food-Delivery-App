@@ -92,15 +92,20 @@ app.post("/sign_up", (req, res) => {
     let phone_num = req.body.phone;
     let email = req.body.email;
     let passwd = req.body.pwd;
-    User.find({"phone_number": phone_num}).then(data => {
-        if (data.length !== 0)  res.render("sign_up", {login: "used_phone"})
-        else {
-            bcrypt.hash(passwd, 10, (err, hashed_pwd) => {
-                User.create({"First_Name": First_Name, "Last_Name": Last_Name, "phone_number": phone_num, "Email_Address": email, "Password": hashed_pwd});
-                res.render("sign_in", {login: ""});
-            })
-        }
-    })
+    if (phone_num.length != 8 || isNaN(phone_num)) {
+        res.render("sign_up", {login: "invalid_phone"});
+    }
+    else{
+        User.find({"phone_number": phone_num}).then(data => {
+            if (data.length !== 0)  res.render("sign_up", {login: "used_phone"})
+            else {
+                bcrypt.hash(passwd, 10, (err, hashed_pwd) => {
+                    User.create({"First_Name": First_Name, "Last_Name": Last_Name, "phone_number": phone_num, "Email_Address": email, "Password": hashed_pwd});
+                    res.render("sign_in", {login: ""});
+                })
+            }
+        })
+    }
 });
 
 
@@ -161,9 +166,7 @@ app.post("/product", auth.authorization, (req, res) => {
     pate = (prod_name === "Malawi") ? ((prod_body.pate === undefined) ? "": prod_body.pate) : "";
     size = (prod_name === "Pizza") ? prod_body.size : "";
 
-    console.log(prod_name, ingredients, pate);
     Price.find({"prod_name": prod_name, "ingredient": ingredients, "Size": size, "Pate": pate}).then(d => {
-        console.log(d);
         let prod_price = d[0].price;
         let components = {"phone_number": req.phone_number, "prod": prod_name,"ingredient": ingredients, "sauces": sauces, "salades": salades, "Frites": prod_body.frite, "Size": size, "Pate": pate, "price": prod_price};
         
@@ -204,6 +207,7 @@ app.post("/cart", auth.authorization, (req, res) => {
     else if (post_route == "/cart"){
         cmds = []
         let elements = arr[arr.length-1].cmds;
+        console.log(elements);
         for (let i=0; i<elements.length; i++){
             cmds.push({"prod_name": elements[i]["prod_name"], "prod_ingredient": elements[i]["prod_ingredient"] , "prod_quantity": elements[i]["prod_quantity"]})
             Price.find({"prod_name": elements[i]["prod_name"], "ingredient": elements[i]["prod_ingredient"]}).then(data => {
