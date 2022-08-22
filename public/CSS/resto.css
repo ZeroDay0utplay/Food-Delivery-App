@@ -345,3 +345,10 @@ a{
 .tt_resto{
     text-align: center;
 }
+
+.comp_name{
+    margin-top: 20px;
+    height: 50px;
+    width: 60%;
+    background-color: #f1dbb1;
+}

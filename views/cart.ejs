@@ -13,12 +13,12 @@
         <div class="card">
             <center><div class="appel">Pour commander, Appelez-nous : 56 66 52 14 ☎️</div></center>
             <% if (cmd_sub === "submitted") {%>
-                <div class="green_msg">
+                <div class="alert alert-success alert-dismissible" style="margin-top: 20px;">
                     <center>Your command has been submitted Successfully.</center>
                 </div>
             <%}%>
             <% if (cmd_sub === "delete_prod") {%>
-                <div class="red_msg">
+                <div class="alert alert-warning alert-dismissible" style="margin-top: 20px;">
                     <center>Product has been removed</center>
                 </div>
             <%}%>
@@ -43,11 +43,11 @@
                             </div>
                             <div class="col" style="margin-top: 5%;">
                                 <button type="button" class="pm minus" id="min<%=i+1%>">-</button>
-                                <p style="display: inline-block;" class="num" id="pm_num<%=i+1%>">1</p>
+                                <p style="display: inline-block;" class="num" id="pm_num<%=i+1%>"><%= prods[i].quantity %></p>
                                 <button type="button" class="pm plus" id="plus<%=i+1%>">+</button>
                             </div>
                             <div class="col" style="margin-top: 5%;">
-                                <p style="display: inline-block;" class="price" id="price<%=i+1%>">&dollar; 5.00</p>
+                                <p style="display: inline-block;" class="price" id="price<%=i+1%>">&dollar; <%= prods[i].total_price %></p>
                                 <button type="submit" id="del_elm<%=i+1%>" class="pm del_elm" style="margin-left: 5%;">&#10005;</button>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                     <div class="col">TOTAL PRICE</div>
                     <div class="col text-right total">&dollar; 0.00</div>
                 </div>
-                <button type="submit" class="btn" style="background-color: orange; border-color: orange;">SUBMIT COMMAND</button>
+                <button type="submit" class="btn" id="clk" style="background-color: orange; border-color: orange;">SUBMIT COMMAND</button>
             </div>
         </div>
             </form>

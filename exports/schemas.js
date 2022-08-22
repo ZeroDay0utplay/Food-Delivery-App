@@ -1,41 +1,54 @@
-const mongoose = require("mongoose");
-
-
-
 const prodSchema = {
-    "prod": String, "ingredient": [String], "sauces": Map, "salades": Map
+    "phone_number": Number,
+    "prod": String,
+    "ingredient": [String],
+    "sauces": Map,
+    "salades": Map,
+    "Frites": String,
+    "Size": String,
+    "Pate": String,
+    "price": Number,
+    "quantity": Number,
+    "total_price": Number
 };
 
 const userSchema = {
     "First_Name": String,
     "Last_Name": String,
     "phone_number": Number,
-    "Password": String,
+    "Password": {type: String},
     "Email_Address": String
 };
 
 const cmdSchema = {
-    "command" : [Map]
+    "phone_number": Number,
+    "command" : [Map],
+    "delivery": Number
 }
 
 const prod_priceSchema = {
     "prod_name": String,
-    "ingredient": String,
-    "price": Number
+    "ingredient": [String],
+    "price": Number,
+    "Size": String,
+    "Pate": String
 }
 
-const User = mongoose.model("User", userSchema);
 
-const Prod = mongoose.model("Prod", prodSchema);
 
-const Command = mongoose.model("Command", cmdSchema);
+const resto_prodSchema = {
+    "prod_name": String,
+    "description": String,
+    "price": Number,
+    "rating": Number
+}
 
-const Price = mongoose.model("Price", prod_priceSchema)
 
 
 module.exports = {
-    User,
-    Prod,
-    Command,
-    Price
+    prodSchema,
+    userSchema,
+    cmdSchema,
+    prod_priceSchema,
+    resto_prodSchema
 }

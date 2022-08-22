@@ -34,17 +34,17 @@
     <main class="form-signin w-100 m-auto">
     <form method="post" action="/sign_in">
         <% if (login === "wrong_phone") {%>
-            <div class="red_msg">
+            <div class="alert alert-danger alert-dismissible" style="margin-top: 20px;">
                 <center>Invalid Phone Number !</center>
             </div>
         <%}%>
         <% if (login === "wrongpwd") {%>
-            <div class="red_msg">
+            <div class="alert alert-danger alert-dismissible" style="margin-top: 20px;">
                 <center>Wrong Password !</center>
             </div>
         <%}%>
-        <% if (login === "success") {%>
-            <div class="green_msg">
+        <% if (login === "alert alert-success alert-dismissible") {%>
+            <div class="alert alert-success" style="margin-top: 20px;">
                 <center>Login Successfully.</center>
             </div>
         <%}%>

@@ -12,8 +12,9 @@ let sum = 0;
 
 for (let i=0; i<price.length; i++){
     let numb = parseFloat(price[i].innerHTML.split(" ")[1])
-    price_num.push(numb);
-    total_price.push(numb);
+    let prod_qty = document.getElementsByClassName("num")[i].innerHTML;
+    price_num.push(numb / prod_qty);
+    total_price.push(numb / prod_qty);
     sum += numb;
 }
 
@@ -51,39 +52,30 @@ document.addEventListener("click", (e)=>{
 
         if (e.target.classList.contains("plus")){
             cnt.innerHTML++;
-
-            total_price[ind] += price_num[ind];
-            sum += price_num[ind];
-            document.getElementById("price" + (elm_num_ind)).innerHTML = dollar_sign + total_price[ind];
-            total[0].innerHTML = dollar_sign + sum;
-            total[1].innerHTML = dollar_sign + (sum + init_liv);
         }
         
         else if (e.target.classList.contains("minus")){
             if (document.getElementById('pm_num' + (elm_num_ind)).innerHTML > 0){
                 cnt.innerHTML--;
-                total_price[ind] -= price_num[ind];
-                sum -= price_num[ind];
-                document.getElementById("price" + (elm_num_ind)).innerHTML = dollar_sign + total_price[ind];
-                total[0].innerHTML = dollar_sign + sum;
-                total[1].innerHTML = dollar_sign + (sum + init_liv);
             }
         }
 
-        // else if (e.target.classList.contains("del_elm")){
-        //     document.getElementsByClassName(e.target.id)[0].remove();
-        //     items --;
-        //     document.getElementsByClassName("items")[0].innerHTML = items + " items";
-        //     document.getElementsByClassName("items")[1].innerHTML = items + " items";
-        //     sum -= ((parseInt(cnt.innerHTML)) * price_num[ind]);
-        //     total[0].innerHTML = dollar_sign + sum;
-        //     total[1].innerHTML = dollar_sign + (sum + init_liv);
-        // }
+
+        total_price[ind] = price_num[ind] * document.getElementsByClassName("num")[ind].innerHTML;
+        sum = price_num[ind] * document.getElementsByClassName("num")[ind].innerHTML;
+        document.getElementById("price" + (elm_num_ind)).innerHTML = dollar_sign + total_price[ind];
+        total[0].innerHTML = dollar_sign + sum;
+        total[1].innerHTML = dollar_sign + (sum + init_liv);
+
     }
 });
 
+
+
+
 let form = document.getElementById("cart");
 form.addEventListener("submit", (event)=>{
+    console.log(event);
     //event.preventDefault(); //--> prevent page from reload
     const prods = form.getElementsByClassName("pn");
     const prod_ingredient = form.getElementsByClassName("pi");

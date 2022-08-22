@@ -6,108 +6,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="CSS/bootstrap.css">
     <link rel="stylesheet" href="CSS/resto.css">
+    <link rel="stylesheet" href="CSS/side_bar.css">
+    <script src="JS/side_bar.min.js"></script>
     <title>Resto</title>
 </head>
+
 <body>
 
     <div class="wrapper">
         <center><div class="appel">Pour commander, Appelez-nous : 56 66 52 14 ☎️</div></center> 
+
+        <%- include("../partials/side_bar.ejs") -%>
+
         <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex flex-column">
             </div>
             <div class="ml-auto btn"><span class="fas fa-cog"></span></div>
         </div>  
         <div id="table" class="bg-white rounded">
-            <div class="d-md-flex align-items-md-center px-3 pt-3">
-                <div class="d-flex flex-column">
-                    <div class="h4 font-weight-bold">Product list</div>
-                </div>
-            </div>
-            <div class="cart">
-                <a href="/cart"><img src="src/cart_black.png" class="cart_img"></a>
-            </div>
             </div>
             <hr>
-            <div class="table-responsive">
-                <form action="/resto" method="post">
-                    <input type="hidden" name="prod_name" value="Makloub">
-                    <button type="submit" id="prod_name" style="border: 0; background-color: #f4f4f4;">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="text-uppercase header">item</th>
-                                    <th scope="col" class="text-uppercase"></th>
-                                    <th scope="col" class="text-uppercase"></th>
-                                    <th scope="col" class="text-uppercase">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="item">
-                                        <div class="d-flex align-items-start">
-                                            <img src="src/Food/Makloub.jpg" style="width: 50%; height: 50%; margin-right: 10%;">
-                                            <div>
-                                                Makloub
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <div class="text-muted">Harisa/Mozarella Salades</div>
-                                                    <div class="text-muted" style="margin-top: 10px;">☆ 4.4</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td></td>
-                                    <td class="d-flex flex-column">
-                                    </td>
-                                    <td class="font-weight-bold">
-                                        $5
-                                    </td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </button>
-                </form>
-            </div>
-            <hr class="items">
+            <% for (let i=0; i<resto_prods.length; i++) {%>
                 <div class="table-responsive">
                     <form action="/resto" method="post">
-                        <input type="hidden" name="prod_name" value="Pizza">
+                        <input type="hidden" name="prod_name" value=<%= resto_prods[i].prod_name %>>
                         <button type="submit" id="prod_name" style="border: 0; background-color: #f4f4f4;">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="text-uppercase header">item</th>
-                                    <th scope="col" class="text-uppercase"></th>
-                                    <th scope="col" class="text-uppercase"></th>
-                                    <th scope="col" class="text-uppercase">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="item">
-                                        <div class="d-flex align-items-start">
-                                            <img src="src/Food/Pizza.jpg" style="width: 50%; height: 50%; margin-right: 10%;">
-                                            <div>
-                                                Pizza
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <div class="text-muted">SauceTomate/Mozarella Salades</div>
-                                                    <div class="text-muted" style="margin-top: 10px;">☆ 4.8</div>
-                                                   
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-uppercase header">item</th>
+                                        <th scope="col" class="text-uppercase"></th>
+                                        <th scope="col" class="text-uppercase"></th>
+                                        <th scope="col" class="text-uppercase">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="item">
+                                            <div class="d-flex align-items-start">
+                                                <img src="src/Food/<%= resto_prods[i].prod_name %>.jpg" style="width: 50%; height: 50%; margin-right: 10%;">
+                                                <div>
+                                                    <%= resto_prods[i].prod_name %>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <div class="text-muted"><%= resto_prods[i].description %></div>
+                                                        <div class="text-muted" style="margin-top: 10px;">☆ <%= resto_prods[i].rating %></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td></td>
-                                    <td class="d-flex flex-column">
-                                    </td>
-                                    <td class="font-weight-bold">
-                                        $5
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                        </td>
+                                        <td></td>
+                                        <td class="d-flex flex-column">
+                                        </td>
+                                        <td class="font-weight-bold">
+                                            $<%= resto_prods[i].price %>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </button>
                     </form>
                 </div>
+            <% } %>
             <hr class="items">
         </div>
     </div>

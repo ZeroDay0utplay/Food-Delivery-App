@@ -128,3 +128,15 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+
+#Personal files
+
+Tasks.txt
+git_pusher.py
+heroku_init_push.py
+heroku_pusher.py
+Procfile
+.vscode/
+prods.txt
+prices.txt
