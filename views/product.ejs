@@ -10,36 +10,33 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="CSS/side_bar_prod.css">
-    <script src="JS/side_bar.min.js"></script>
-    <script src="JS/side_bar.js"></script>
 
 </head>
 <body>
     <center><div class="appel">Pour commander, Appelez-nous : 56 66 52 14 ☎️</div></center>
 
-    <%- include("../partials/side_bar.ejs") -%>
+    <a href="/resto"><img class="home" src="src/home_orange.png"></a>
+    <a href="/cart"><img class="cart" src="src/cart_orange.png"></a>
 
     <!-- <center><h3 class="prod"><%= produit %></h3></center> -->
     
     <% if (ing === "no_ing") {%>
-        <div class="alert alert-danger alert-dismissible">
+        <div class="red_msg">
             <center>Please specify an ingredient !</center>
         </div>
     <%}%>
     <% if (ing === "success") {%>
-        <div class="alert alert-success alert-dismissible">
-            <p><center>Your command has been submitted</center></p>
+        <div class="green_msg">
+            <center>Your command has been submitted</center>
             <center><p style="margin-top: 8px;">Successfully</p></center>
         </div>
     <%}%>
 
     <br><br>
-    
-    
+
     <center><img src="src/Food/<%= produit %>.jpg" class="mama"></center>
 	
-    <form action="/product" method="post" id="prod_form">
+    <form action="/product" method="post">
         <input type="hidden" name="prod_name" value=<%=produit%>>
             
         <div class="dropdown spc">
@@ -149,59 +146,17 @@
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li>
                 <div style="white-space: nowrap;"> 
-                        <input class="inp" type="checkbox" class="inp" value = "Avec Frites" name="frite" style="display: inline-block;" checked="true">  
+                        <input class="inp" type="checkbox" class="inp" value = "1" name="frite" style="display: inline-block;">  
                         <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Avec Frites</p>
                 </div>
             </li>
             <li>
                 <div style="white-space: nowrap;"> 
-                    <input type="checkbox" class="inp" name="frite" value="Sans Frites" style="display: inline-block;">  
+                    <input type="checkbox" class="inp" name="frite" value="0" style="display: inline-block;">  
                     <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Sans Frites</p>
                 </div>
             </li>
         </div>
-
-        <% if (produit === "Malawi") {%>
-            <div class="dropdown spc">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                Pate
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li>
-                    <div style="white-space: nowrap;"> 
-                            <input class="inp" type="checkbox" class="inp" value = "Double Pate" name="pate" style="display: inline-block;">  
-                            <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Double Pate</p>
-                    </div>
-                </li>
-            </div>
-        <%}%>
-
-        <% if (produit === "Pizza" || produit === "BaguetteFarcie") {%>
-            <div class="dropdown spc">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                Size
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li>
-                    <div style="white-space: nowrap;"> 
-                            <input class="inp" type="checkbox" class="inp" value = "Mini" name="size" style="display: inline-block;" checked="true">  
-                            <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Mini</p>
-                    </div>
-                </li>
-                <li>
-                    <div style="white-space: nowrap;"> 
-                            <input class="inp" type="checkbox" class="inp" value = "Moyenne" name="size" style="display: inline-block;">  
-                            <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Moyenne</p>
-                    </div>
-                </li>
-                <li>
-                    <div style="white-space: nowrap;"> 
-                        <input type="checkbox" class="inp" name="size" value="Large" style="display: inline-block;">  
-                        <p class="dropdown-item har" id="har_inp" style="display: inline-block;">Large</p>
-                    </div>
-                </li>
-            </div>
-        <%}%>
         
         <div>
             <button class="btn add" type="submit">Ajouter la commande</button>

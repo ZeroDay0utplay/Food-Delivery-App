@@ -18,21 +18,57 @@ mongoose.connect("mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_P
 
 
 
-const auth = require("./exports/auth.js");
-const schemas = require("./exports/schemas.js");
 
-const User = mongoose.model("User", schemas.userSchema);
+function generateAccessToken(username) {
+    return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+}
 
-const Prod = mongoose.model("Prod", schemas.prodSchema);
+const authorization = (req, res, next) => {
+    const token = req.cookies.access_token;
+    if (!token) {
+      return res.sendStatus(403);
+    }
+    try {
+        const data = jwt.verify(token, process.env.TOKEN_SECRET);
+        req.phone_number = data.phone_number;
+        return next();
+    } catch {
+        return res.sendStatus(403);
+    }
+};
 
-const Command = mongoose.model("Command", schemas.cmdSchema);
-
-const Price = mongoose.model("Price", schemas.prod_priceSchema)
-
-const resto_Prods = mongoose.model("resto_Prods", schemas.resto_prodSchema);
 
 
+const prodSchema = {
+    "phone_number": Number, "prod": String, "ingredient": [String], "sauces": Map, "salades": Map
+};
 
+const userSchema = {
+    "First_Name": String,
+    "Last_Name": String,
+    "phone_number": Number,
+    "Password": {type: String},
+    "Email_Address": String
+};
+
+const cmdSchema = {
+    "phone_number": Number,
+    "command" : [Map]
+}
+
+const prod_priceSchema = {
+    "prod_name": String,
+    "ingredient": String,
+    "price": Number
+}
+
+const User = mongoose.model("User", userSchema);
+
+const Prod = mongoose.model("Prod", prodSchema);
+
+const Command = mongoose.model("Command", cmdSchema);
+
+const Price = mongoose.model("Price", prod_priceSchema)
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -44,10 +80,9 @@ app.use(cookieParser());
 
 
 
+let login_msg = "";
+let su_msg = "";
 let ingred = "";
-
-
-
 
 app.get("/", (req, res) => {
     res.render("sign_in", {login: ""});
@@ -61,29 +96,20 @@ app.get("/sign_up", (req, res) => {
     res.render("sign_up", {login: ""});
 })
 
-app.get("/product", auth.authorization, (req, res) => {
+app.get("/product", authorization, (req, res) => {
     res.render("product", {produit: "Pizza", ing: ingred});
 })
 
-app.get("/cart", auth.authorization, (req, res) => {
-    Prod.find({"phone_number": req.phone_number}).then(data => { 
+app.get("/cart", authorization, (req, res) => {
+    Prod.find({"phone_number": req.phone_number}).then(data => {    
         res.render("cart", {cmd_sub: "", prods: data});
     });
 })
 
-app.get("/resto", auth.authorization, (req, res) => {
-    resto_Prods.find().then(data => {
-        res.render("resto", {resto_prods: data});
-    })
+app.get("/resto", authorization, (req, res) => {
+    res.render("resto");
 })
 
-
-
-app.get("/logout", (req, res) => {
-    res.clearCookie("access_token");
-    res.render("sign_in", {login: ""});
-    res.end();
-})
 
 
 app.post("/sign_up", (req, res) => {
@@ -92,20 +118,15 @@ app.post("/sign_up", (req, res) => {
     let phone_num = req.body.phone;
     let email = req.body.email;
     let passwd = req.body.pwd;
-    if (phone_num.length != 8 || isNaN(phone_num)) {
-        res.render("sign_up", {login: "invalid_phone"});
-    }
-    else{
-        User.find({"phone_number": phone_num}).then(data => {
-            if (data.length !== 0)  res.render("sign_up", {login: "used_phone"})
-            else {
-                bcrypt.hash(passwd, 10, (err, hashed_pwd) => {
-                    User.create({"First_Name": First_Name, "Last_Name": Last_Name, "phone_number": phone_num, "Email_Address": email, "Password": hashed_pwd});
-                    res.render("sign_in", {login: ""});
-                })
-            }
-        })
-    }
+    User.find({"phone_number": phone_num}).then(data => {
+        if (data.length !== 0)  res.render("sign_up", {login: "used_phone"})
+        else {
+            bcrypt.hash(passwd, 10, (err, hashed_pwd) => {
+                User.create({"First_Name": First_Name, "Last_Name": Last_Name, "phone_number": phone_num, "Email_Address": email, "Password": hashed_pwd});
+                res.render("sign_in", {login: ""});
+            })
+        }
+    })
 });
 
 
@@ -117,14 +138,12 @@ app.post("/sign_in", (req, res) => {
         else{
             bcrypt.compare(passwd, data[0].Password, (err, result) => {
                 if (result === true){
-                    const token = auth.generateAccessToken({ "phone_number": phone_num });
+                    const token = generateAccessToken({ "phone_number": phone_num });
                     res.cookie("access_token", token, {
                         httpOnly: true,
                         secure: process.env.NODE_ENV === "production",
                     })
-                    resto_Prods.find().then(data => {
-                        res.render("resto", {resto_prods: data});
-                    })
+                    res.render("resto")
                 }
                 
                 else res.render("sign_in", {login: "wrongpwd"})
@@ -135,12 +154,12 @@ app.post("/sign_in", (req, res) => {
 });
 
 
-app.post("/resto", auth.authorization, (req, res) => {
+app.post("/resto", authorization, (req, res) => {
     let product_name = req.body.prod_name;
     res.render("product", {produit: product_name, ing: ""});
 })
 
-app.post("/product", auth.authorization, (req, res) => {
+app.post("/product", authorization, (req, res) => {
     let prod_body = req.body;
     let ingredients = [];
     let sauces = {};
@@ -153,7 +172,7 @@ app.post("/product", auth.authorization, (req, res) => {
     if (prod_body.thon == "on") ingredients.push("thon");
     if (prod_body.salami == "on") ingredients.push("salami");
     if (prod_body.kwika == "on") ingredients.push("kwika");
-    if (prod_body.jombon == "on") ingredients.push("jombon");
+    if (prod_body.jomnon == "on") ingredients.push("jombon");
 
     sauces["harisa"] = prod_body.harisa;
     sauces["salata__Mechweya"] = prod_body.sal_mech;
@@ -163,37 +182,34 @@ app.post("/product", auth.authorization, (req, res) => {
     salades["tomate"] = prod_body.tomate;
     salades["laitue"] = prod_body.laitue;
 
-    pate = (prod_name === "Malawi") ? ((prod_body.pate === undefined) ? "": prod_body.pate) : "";
-    size = (prod_name === "Pizza") ? prod_body.size : "";
+    let components = {"phone_number": req.phone_number, "prod": prod_name,"ingredient": ingredients, "sauces": sauces, "salades": salades};
 
-    Price.find({"prod_name": prod_name, "ingredient": ingredients, "Size": size, "Pate": pate}).then(d => {
-        let prod_price = d[0].price;
-        let components = {"phone_number": req.phone_number, "prod": prod_name,"ingredient": ingredients, "sauces": sauces, "salades": salades, "Frites": prod_body.frite, "Size": size, "Pate": pate, "price": prod_price};
-        
-        
-        ingred = (ingredients.length === 0) ?  "no_ing" : "success";
-        res.render("product", {produit: prod_name, ing: ingred});
-        
-        if (ingred === "success"){
-            const prod = new Prod(components); 
-            prod.save();
-        }
-        
-        ingred = ""; // for removing succ/err msg for a new command
-    })
+    components["frite"] = "Avec Frite";
 
+    if (prod_body.frite === "0") components["frite"] = "Sans Frite";
+
+    ingred = (ingredients.length === 0) ?  "no_ing" : "success";
+    res.render("product", {produit: prod_name, ing: ingred});
+    
+    if (ingred === "success"){
+        const prod = new Prod(components); 
+        prod.save();
+    }
+    
+    ingred = ""; // for removing succ/err msg for a new command
 
 })
 
 let arr = []; //temp solution <--> problem of overflow 
 
-app.post("/cart", auth.authorization, (req, res) => {
+app.post("/cart", authorization, (req, res) => {
     // 2 post requests at the same time
     let post_req = req.body;
     if (Object.keys(post_req).length !== 0) arr.push(post_req);
 
     let post_route = arr[arr.length-1].post_route;
 
+    console.log(arr);
 
     if (post_route === "/del_prod"){
         let prod_name = req.body.prod_name;
@@ -207,7 +223,6 @@ app.post("/cart", auth.authorization, (req, res) => {
     else if (post_route == "/cart"){
         cmds = []
         let elements = arr[arr.length-1].cmds;
-        console.log(elements);
         for (let i=0; i<elements.length; i++){
             cmds.push({"prod_name": elements[i]["prod_name"], "prod_ingredient": elements[i]["prod_ingredient"] , "prod_quantity": elements[i]["prod_quantity"]})
             Price.find({"prod_name": elements[i]["prod_name"], "ingredient": elements[i]["prod_ingredient"]}).then(data => {

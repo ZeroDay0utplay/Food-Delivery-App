@@ -1,51 +1,41 @@
+const mongoose = require("mongoose");
+
+
+
 const prodSchema = {
-    "phone_number": Number,
-    "prod": String,
-    "ingredient": [String],
-    "sauces": Map,
-    "salades": Map,
-    "Frites": String,
-    "Size": String,
-    "Pate": String,
-    "price": Number
+    "prod": String, "ingredient": [String], "sauces": Map, "salades": Map
 };
 
 const userSchema = {
     "First_Name": String,
     "Last_Name": String,
     "phone_number": Number,
-    "Password": {type: String},
+    "Password": String,
     "Email_Address": String
 };
 
 const cmdSchema = {
-    "phone_number": Number,
     "command" : [Map]
 }
 
 const prod_priceSchema = {
     "prod_name": String,
-    "ingredient": [String],
-    "price": Number,
-    "Size": String,
-    "Pate": String
+    "ingredient": String,
+    "price": Number
 }
 
+const User = mongoose.model("User", userSchema);
 
+const Prod = mongoose.model("Prod", prodSchema);
 
-const resto_prodSchema = {
-    "prod_name": String,
-    "description": String,
-    "price": Number,
-    "rating": Number
-}
+const Command = mongoose.model("Command", cmdSchema);
 
+const Price = mongoose.model("Price", prod_priceSchema)
 
 
 module.exports = {
-    prodSchema,
-    userSchema,
-    cmdSchema,
-    prod_priceSchema,
-    resto_prodSchema
+    User,
+    Prod,
+    Command,
+    Price
 }

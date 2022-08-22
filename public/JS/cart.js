@@ -119,5 +119,4 @@ form.addEventListener("submit", (event)=>{
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(command)
     })
-    console.log(command);
 })
