@@ -184,18 +184,15 @@ app.post("/product", auth.authorization, (req, res) => {
                     if (prods_data.length!==0){
                         let new_qty = prods_data[0].quantity+1;
                         let new_tot_price = parseInt(prods_data[0].total_price) + parseInt(prods_data[0].price);
-                        console.log(prods_data[0].quantity, prods_data[0].total_price);
-                        Prod.deleteMany(components).then();
-                        console.log(prods_data[0].total_price, prods_data[0]);
-                        components["total_price"] = new_tot_price;
-                        components["quantity"] = new_qty;
+                        
+                        Prod.findOneAndUpdate(components, {"quantity": new_qty, "total_price": new_tot_price}).then();
+                        
                     } 
                     else{
                         components["total_price"] =  prod_price;
                         components["quantity"] = 1;
+                        Prod.create(components);
                     }
-                    console.log(components); 
-                    Prod.create(components);
                 })
                 res.render("product", {produit: prod_name, ing: "success"});
 
