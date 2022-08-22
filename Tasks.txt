@@ -1,7 +1,0 @@
-1) Encrypt Pwd (hash) 
-2) JWT implementation *
-3) Forgot Password
-4) change resto default pizza *
-5) refactor using json
-6) add profile section
-7) Phone Number check up (all of it is digits and len == 8)
