@@ -44,11 +44,25 @@ const resto_prodSchema = {
 }
 
 
+const ingredient = {
+    "ingredient": String,
+    "id": String
+}
+
+const prod_descriptionSchema = {
+    "prod_name": String,
+    "ingredients": [ingredient],
+    "Sauces": String,
+    "Salades": String,
+}
+
+
 
 module.exports = {
     prodSchema,
     userSchema,
     cmdSchema,
     prod_priceSchema,
-    resto_prodSchema
+    resto_prodSchema,
+    prod_descriptionSchema
 }

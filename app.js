@@ -13,8 +13,8 @@ const cookieParser = require("cookie-parser");
 
 
 
-// mongoose.connect("mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PWD + "@cluster0.8jvshni.mongodb.net/tac_tac");
-mongoose.connect("mongodb://localhost:27017/tac_tac")
+mongoose.connect("mongodb+srv://" + process.env.DB_USER + ":" + process.env.DB_PWD + "@cluster0.8jvshni.mongodb.net/tac_tac");
+//mongoose.connect("mongodb://localhost:27017/tac_tac")
 
 
 
