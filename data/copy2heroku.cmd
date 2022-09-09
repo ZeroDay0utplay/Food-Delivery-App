@@ -1,0 +1,8 @@
+xcopy .\exports "..\Tac-Tac Delivery Heroku\"
+xcopy xcopy node_modules "..\Tac-Tac Delivery Heroku" 
+xcopy partials "..\Tac-Tac Delivery Heroku"
+xcopy public "..\Tac-Tac Delivery Heroku"
+xcopy views "..\Tac-Tac Delivery Heroku"
+xcopy app.js "..\Tac-Tac Delivery Heroku"
+xcopy package.json "..\Tac-Tac Delivery Heroku"
+xcopy package-lock.json "..\Tac-Tac Delivery Heroku"

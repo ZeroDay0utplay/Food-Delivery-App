@@ -7,7 +7,6 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
-const crypto = require("crypto")
 const cookieParser = require("cookie-parser");
 
 
@@ -31,11 +30,13 @@ const Price = mongoose.model("Price", schemas.prod_priceSchema)
 
 const resto_Prods = mongoose.model("resto_Prods", schemas.resto_prodSchema);
 
+const prod_descriptions = mongoose.model("prod_descriptions", schemas.prod_descriptionSchema);
+
 
 
 
 const app = express();
-app.use(bodyParser.urlencoded({extended: true}));
+//app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
@@ -46,7 +47,13 @@ app.use(cookieParser());
 
 let ingred = "";
 
-
+function filter(str){
+    let filtred_str = "";
+    for (let c=0; c<str.length; c++){
+        if (str[c].toLowerCase() !== str[c].toUpperCase()) filtred_str+=str[c];
+    }
+    return filtred_str;
+}
 
 
 app.get("/", (req, res) => {
@@ -137,7 +144,11 @@ app.post("/sign_in", (req, res) => {
 
 app.post("/resto", auth.authorization, (req, res) => {
     let product_name = req.body.prod_name;
-    res.render("product", {produit: product_name, ing: ""});
+    //console.log(product_name);
+    prod_descriptions.find({"prod_name": product_name})
+    //.then(data => console.log(data));
+    //.then(d => console.log(d[0].buttons[0].components));
+    .then(data => res.render("product", {produit: data[0], ing: ""}));
 })
 
 app.post("/product", auth.authorization, (req, res) => {
@@ -148,6 +159,7 @@ app.post("/product", auth.authorization, (req, res) => {
     
     let prod_name = prod_body.prod_name;
 
+    console.log(prod_body);
 
     if (prod_body.escalope == "on") ingredients.push("escalope");
     if (prod_body.chawarma == "on") ingredients.push("chawarma");
@@ -159,6 +171,7 @@ app.post("/product", auth.authorization, (req, res) => {
     sauces["harisa"] = prod_body.harisa;
     sauces["salata__Mechweya"] = prod_body.sal_mech;
     sauces["mayonnaise"] = prod_body.may;
+    sauces["barbecue"] = prod_body.barbecue
 
     salades["onion"] = prod_body.onion;
     salades["tomate"] = prod_body.tomate;
@@ -173,8 +186,11 @@ app.post("/product", auth.authorization, (req, res) => {
     //console.log("Prod_Name: " + prod_name, "ing: " + ingredients, "size: "+size, "pate: "+pate)
 
 
-    if (ingredients.length === 0) res.render("product", {produit: prod_name, ing: "no_ing"});
-
+    if (ingredients.length === 0){
+        prod_descriptions.find({"prod_name": prod_name})
+        .then(prd_data => res.render("product", {produit: prd_data[0], ing: "no_ing"}))
+    }
+    
     else{
         Price.find({"prod_name": prod_name, "ingredient": ingredients, "Size": size, "Pate": pate}).then(d => {
             if (d.length !== 0){
@@ -194,11 +210,15 @@ app.post("/product", auth.authorization, (req, res) => {
                         Prod.create(components);
                     }
                 })
-                res.render("product", {produit: prod_name, ing: "success"});
+                prod_descriptions.find({"prod_name": prod_name})
+                .then(prd_data => res.render("product", {produit: prd_data[0], ing: "success"}))
 
                 ingred = ""; // for removing succ/err msg for a new command
             }
-            else res.render("product", {produit: prod_name, ing: ""}); // add not found in DB error in ejs file
+            else {
+                prod_descriptions.find({"prod_name": prod_name})
+                .then(prd_data => res.render("product", {produit: prd_data[0], ing: ""}))
+            } // add not found in DB error in ejs file
         })
     }
 
@@ -206,20 +226,18 @@ app.post("/product", auth.authorization, (req, res) => {
 })
 
 
-let arr = []; //temp solution <--> problem of overflow !!!
 
 app.post("/cart", auth.authorization, (req, res) => {
     // 2 post requests at the same time
     let post_req = req.body;
-    if (Object.keys(post_req).length !== 0) arr.push(post_req);
+    let prod_id = post_req.prod_id;
+    //if (Object.keys(post_req).length !== 0) arr.push(post_req);
 
-    let post_route = arr[arr.length-1].post_route;
+    let post_route = post_req.post_route;
 
 
     if (post_route === "/del_prod"){
-        let prod_name = req.body.prod_name;
-        let prod_ingredient = req.body.prod_ingredient
-        Prod.deleteOne({"prod": prod_name, "prod_ingredient": prod_ingredient}).then();
+        //Prod.deleteOne({"_id": prod_id}).then();
         Prod.find().then(data => {    
             res.render("cart", {cmd_sub: "delete_prod", prods: data});
         });
@@ -227,12 +245,17 @@ app.post("/cart", auth.authorization, (req, res) => {
 
     else if (post_route == "/cart"){
         let commands = []
-        let elements = arr[arr.length-1].cmds;
+        let elements = post_req.cmds;
         for (let i=0; i<elements.length; i++){
-            commands.push({"prod_name": elements[i]["prod_name"], "prod_ingredient": elements[i]["prod_ingredient"] , "prod_quantity": elements[i]["prod_quantity"]})
-            Price.find({"prod_name": elements[i]["prod_name"], "ingredient": elements[i]["prod_ingredient"]}).then(data => {
-            })
+            let prod_id = mongoose.Types.ObjectId(elements[i].prod_id);
+            Prod.find({"_id": prod_id}).then(d =>{
+                    Command.find({"_id": prod_id}).then(ez => {
+                        if (ez.length === 0) Command.insertMany(d).then();
+                    })
+                }   
+            )
         }
+        
 
         if (commands.length !== 0){ //never add empty submit to DB
             if (Command.find({"phone_number": req.phone_number, "command": commands}).then(cmds_data => { // add time checker (30s) between each cmd
@@ -242,7 +265,7 @@ app.post("/cart", auth.authorization, (req, res) => {
                 }
             }));
         }
-        Prod.deleteMany({"phone_number": req.phone_number}).then();
+        //Prod.deleteMany({"phone_number": req.phone_number}).then();
         Prod.find().then(data => {    
             res.render("cart", {cmd_sub: "submitted", prods: data});
         });

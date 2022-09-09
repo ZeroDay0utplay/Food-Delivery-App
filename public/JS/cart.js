@@ -75,35 +75,32 @@ document.addEventListener("click", (e)=>{
 
 let form = document.getElementById("cart");
 form.addEventListener("submit", (event)=>{
-    console.log(event);
-    //event.preventDefault(); //--> prevent page from reload
+    event.preventDefault(); //--> prevent page from reload
     const prods = form.getElementsByClassName("pn");
-    const prod_ingredient = form.getElementsByClassName("pi");
-    const prod_qty = form.getElementsByClassName("num");
+    
 
     var command;
 
     if (event.submitter.classList.contains("del_elm")){
-        let removed_prod = prods[parseInt(event.submitter.id.slice(-1))-1].innerHTML
-        let ingred_rm_prod = prod_ingredient[parseInt(event.submitter.id.slice(-1))-1].innerHTML
-        let qty_rm_prod = prod_qty[parseInt(event.submitter.id.slice(-1))-1].innerHTML
+        let prod_id = prods[parseInt(event.submitter.id.slice(-1))-1].id;
+        console.log(prod_id);
         command = {
             "post_route": "/del_prod",
-            "prod_name": removed_prod,
-            "prod_ingredient": ingred_rm_prod,
-            "prod_quantity": qty_rm_prod
+            "prod_id": prod_id,
         }
         
     }
     else{
         cmds = [];
         for (let i=0; i<prods.length; i++){
+            let prod_id = prods[i].id;
+            let prod_quantity = document.getElementById(`pm_num${i+1}`).innerHTML;
             cmds.push({
-                "prod_name": prods[i].innerHTML,
-                "prod_ingredient": prod_ingredient[i].innerHTML,
-                "prod_quantity": prod_qty[i].innerHTML
+                "prod_id": prod_id,
+                "quantity": prod_quantity
             })
         }
+        console.log(cmds);
         command = {"post_route": "/cart", "cmds": cmds}
     }
     fetch("/cart", {

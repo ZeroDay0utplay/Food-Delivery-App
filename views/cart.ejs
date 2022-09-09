@@ -32,11 +32,12 @@
                     </div>    
             <form action="/cart" method="post" id="cart">
                 <%for (let i=0; i<prods.length; i++){%>
+                    <!-- <input type="hidden" name="id" value=<%= prods[i]._id %>> -->
                     <div class="row border-top border-bottom del_elm<%=i+1%> elm">
                         <div class="row main align-items-center">
                             <div class="col-2"><img class="img-fluid" src="src/Food/<%= prods[i].prod %>.jpg"></div>
                             <div class="col">
-                                <div class="row text-muted pn"><%= prods[i].prod %> <%= prods[i].Size %> <%= prods[i].Pate %></div>
+                                <div class="row text-muted pn" id=<%= prods[i]._id %>><%= prods[i].prod %> <%= prods[i].Size %> <%= prods[i].Pate %></div>
                                 <%for (let k=0; k<prods[i].ingredient.length; k++){%>
                                     <div class="row pi"><%= prods[i].ingredient[k] %></div>
                                 <%}%>

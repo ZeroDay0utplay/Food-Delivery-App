@@ -1,3 +1,6 @@
+const mongoose = require("mongoose");
+
+
 const prodSchema = {
     "phone_number": Number,
     "prod": String,
@@ -22,8 +25,16 @@ const userSchema = {
 
 const cmdSchema = {
     "phone_number": Number,
-    "command" : [Map],
-    "delivery": Number
+    "prod": String,
+    "ingredient": [String],
+    "sauces": Map,
+    "salades": Map,
+    "Frites": String,
+    "Size": String,
+    "Pate": String,
+    "price": Number,
+    "quantity": Number,
+    "total_price": Number
 }
 
 const prod_priceSchema = {
@@ -44,17 +55,22 @@ const resto_prodSchema = {
 }
 
 
-const ingredient = {
-    "ingredient": String,
-    "id": String
-}
+const button_infos = new mongoose.Schema({
+    "type": String,
+    "html_name": String,
+    "display_name": String
+})
 
-const prod_descriptionSchema = {
+
+const buttons = new mongoose.Schema({
+    "btn_name": String,
+    "components": [button_infos]
+})
+
+const prod_descriptionSchema = new mongoose.Schema({
     "prod_name": String,
-    "ingredients": [ingredient],
-    "Sauces": String,
-    "Salades": String,
-}
+    "buttons": [buttons]
+})
 
 
 
