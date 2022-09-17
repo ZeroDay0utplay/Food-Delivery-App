@@ -36,7 +36,7 @@ const prod_descriptions = mongoose.model("prod_descriptions", schemas.prod_descr
 
 
 const app = express();
-//app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
@@ -47,13 +47,6 @@ app.use(cookieParser());
 
 let ingred = "";
 
-function filter(str){
-    let filtred_str = "";
-    for (let c=0; c<str.length; c++){
-        if (str[c].toLowerCase() !== str[c].toUpperCase()) filtred_str+=str[c];
-    }
-    return filtred_str;
-}
 
 
 app.get("/", (req, res) => {
@@ -241,6 +234,27 @@ app.post("/cart", auth.authorization, (req, res) => {
         Prod.find().then(data => {    
             res.render("cart", {cmd_sub: "delete_prod", prods: data});
         });
+    }
+    
+    else if (post_route === "/minus"){
+        Prod.find({"_id": prod_id}).then(
+            d=>{
+                if (d[0]["quantity"] === 1) Prod.deleteOne({"_id": prod_id}).then();
+                else Prod.findByIdAndUpdate(prod_id, {$inc: {"quantity": -1, "total_price": -d[0]["price"]}}).then();
+            }
+        );
+    }
+
+    else if (post_route === "/plus"){
+        Prod.findByIdAndUpdate(prod_id, {$inc: {"quantity": 1}}, (err, raw)=>{});
+        // .then(
+        //     d=>{
+        //         Prod.findByIdAndUpdate(prod_id, {$inc: {"quantity": 1, "total_price": d[0]["price"]}}).then();
+        //     }
+        // );
+        // Prod.find().then(data => {    
+        //     res.render("cart", {cmd_sub: "delete_prod", prods: data});
+        // });
     }
 
     else if (post_route == "/cart"){
