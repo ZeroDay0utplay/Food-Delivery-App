@@ -137,10 +137,7 @@ app.post("/sign_in", (req, res) => {
 
 app.post("/resto", auth.authorization, (req, res) => {
     let product_name = req.body.prod_name;
-    //console.log(product_name);
     prod_descriptions.find({"prod_name": product_name})
-    //.then(data => console.log(data));
-    //.then(d => console.log(d[0].buttons[0].components));
     .then(data => res.render("product", {produit: data[0], ing: ""}));
 })
 
@@ -151,8 +148,6 @@ app.post("/product", auth.authorization, (req, res) => {
     let salades = {};
     
     let prod_name = prod_body.prod_name;
-
-    console.log(prod_body);
 
     if (prod_body.escalope == "on") ingredients.push("escalope");
     if (prod_body.chawarma == "on") ingredients.push("chawarma");
@@ -221,40 +216,25 @@ app.post("/product", auth.authorization, (req, res) => {
 
 
 app.post("/cart", auth.authorization, (req, res) => {
-    // 2 post requests at the same time
     let post_req = req.body;
     let prod_id = post_req.prod_id;
-    //if (Object.keys(post_req).length !== 0) arr.push(post_req);
 
     let post_route = post_req.post_route;
 
 
     if (post_route === "/del_prod"){
-        //Prod.deleteOne({"_id": prod_id}).then();
+        Prod.deleteOne({"_id": prod_id}).then();
         Prod.find().then(data => {    
             res.render("cart", {cmd_sub: "delete_prod", prods: data});
         });
     }
     
     else if (post_route === "/minus"){
-        Prod.find({"_id": prod_id}).then(
-            d=>{
-                if (d[0]["quantity"] === 1) Prod.deleteOne({"_id": prod_id}).then();
-                else Prod.findByIdAndUpdate(prod_id, {$inc: {"quantity": -1, "total_price": -d[0]["price"]}}).then();
-            }
-        );
+        Prod.findByIdAndUpdate(prod_id, {$inc: {"quantity": -1}}, (err, raw)=>{});
     }
 
     else if (post_route === "/plus"){
         Prod.findByIdAndUpdate(prod_id, {$inc: {"quantity": 1}}, (err, raw)=>{});
-        // .then(
-        //     d=>{
-        //         Prod.findByIdAndUpdate(prod_id, {$inc: {"quantity": 1, "total_price": d[0]["price"]}}).then();
-        //     }
-        // );
-        // Prod.find().then(data => {    
-        //     res.render("cart", {cmd_sub: "delete_prod", prods: data});
-        // });
     }
 
     else if (post_route == "/cart"){
@@ -279,10 +259,8 @@ app.post("/cart", auth.authorization, (req, res) => {
                 }
             }));
         }
-        //Prod.deleteMany({"phone_number": req.phone_number}).then();
-        Prod.find().then(data => {    
-            res.render("cart", {cmd_sub: "submitted", prods: data});
-        });
+        Prod.deleteMany({"phone_number": req.phone_number}).then();
+        //res.render("cart", {cmd_sub: "submitted", prods: ""});
     }
 
     else{

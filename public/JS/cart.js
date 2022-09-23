@@ -1,8 +1,31 @@
+let ez = document.getElementsByClassName("num").length;
+let sum = 0;
+
+for (let i=1; i<=ez; i++){
+    let qty = document.getElementById(`pm_num${i}`).innerHTML;
+    let prix = document.getElementById(`prix${i}`).value;
+    let total = parseInt(qty) * parseInt(prix);
+    document.getElementById(`price${i}`).innerHTML = "$ " + total;
+    sum += total;
+}
+
+
+function select_ch(){    
+    select = document.getElementById("selected").value;
+    document.getElementById("total_liv").innerHTML = "$ " + (parseFloat(sum) + parseFloat(select.split(" ")[5]) + ".00");
+}
+
+
+
+select_ch();
+
+document.getElementById("total").innerHTML = "$ " + sum + ".00";
 
 
 
 let form = document.getElementById("cart");
-form.addEventListener("submit", (event)=>{
+
+document.addEventListener("submit", (event)=>{
     //event.preventDefault(); //--> prevent page from reload
     const prods = form.getElementsByClassName("pn");
     
@@ -40,10 +63,8 @@ form.addEventListener("submit", (event)=>{
                 "quantity": prod_quantity
             })
         }
-        console.log(cmds);
         command = {"post_route": "/cart", "cmds": cmds}
     }
-    console.log(command);
     fetch("/cart", {
         method: "POST",
         headers: {"Content-Type": "application/json"},

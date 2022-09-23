@@ -44,11 +44,12 @@
                             </div>
                             <div class="col" style="margin-top: 5%;">
                                 <button type="submit" class="pm minus" id="min<%=i+1%>">-</button>
+                                <input type="hidden" name="prix" value="<%= prods[i].price %>" id="prix<%=i+1%>">
                                 <p style="display: inline-block;" class="num" id="pm_num<%=i+1%>"><%= prods[i].quantity %></p>
                                 <button type="submit" class="pm plus" id="plus<%=i+1%>">+</button>
                             </div>
                             <div class="col" style="margin-top: 5%;">
-                                <p style="display: inline-block;" class="price" id="price<%=i+1%>">&dollar; <%= prods[i].total_price %></p>
+                                <p style="display: inline-block;" class="price" id="price<%=i+1%>"></p>
                                 <button type="submit" id="del_elm<%=i+1%>" class="pm del_elm" style="margin-left: 5%;">&#10005;</button>
                             </div>
                         </div>
@@ -65,7 +66,7 @@
                 <hr>
                 <div class="row">
                     <div class="col items" style="padding-left:0;" id="bottom_items">ITEMS 1</div>
-                    <div class="col text-right total">&dollar; 0.00</div>
+                    <div class="col text-right total" id="total">&dollar; 0.00</div>
                 </div>
                 <p>SHIPPING</p>
                 <select id="selected" onchange="select_ch()">
@@ -78,7 +79,7 @@
                 <input id="code" placeholder="Enter your code">
                 <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                     <div class="col">TOTAL PRICE</div>
-                    <div class="col text-right total">&dollar; 0.00</div>
+                    <div class="col text-right total" id="total_liv">&dollar; 0.00</div>
                 </div>
                 <button type="submit" class="btn" id="clk" style="background-color: orange; border-color: orange;">SUBMIT COMMAND</button>
             </div>
