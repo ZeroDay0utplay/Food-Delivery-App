@@ -1,7 +1,14 @@
-let ez = document.getElementsByClassName("num").length;
+let bottom_items = document.getElementById("bottom_items");
+let top_items = document.getElementById("items");
+
+let num_items = document.getElementsByClassName("num").length;
 let sum = 0;
 
-for (let i=1; i<=ez; i++){
+top_items.innerHTML = num_items + " items";
+bottom_items.innerHTML = "ITEMS " + num_items;
+
+
+for (let i=1; i<=num_items; i++){
     let qty = document.getElementById(`pm_num${i}`).innerHTML;
     let prix = document.getElementById(`prix${i}`).value;
     let total = parseInt(qty) * parseInt(prix);
@@ -13,7 +20,6 @@ for (let i=1; i<=ez; i++){
 function select_ch(){    
     select = document.getElementById("selected").value;
     selected_elm = select.split(" ").slice(0, 3).join("");
-    console.log(selected_elm);
     document.getElementById("total_liv").innerHTML = "$ " + (parseFloat(sum) + parseFloat(select.split(" ")[5]) + ".00");
 }
 
