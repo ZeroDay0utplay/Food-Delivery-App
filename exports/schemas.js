@@ -12,7 +12,6 @@ const prodSchema = {
     "Pate": String,
     "price": Number,
     "quantity": Number,
-    "total_price": Number
 };
 
 const userSchema = {
@@ -34,7 +33,7 @@ const cmdSchema = {
     "Pate": String,
     "price": Number,
     "quantity": Number,
-    "total_price": Number
+    "delivery": String
 }
 
 const prod_priceSchema = {

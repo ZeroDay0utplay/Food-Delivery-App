@@ -240,11 +240,14 @@ app.post("/cart", auth.authorization, (req, res) => {
     else if (post_route == "/cart"){
         let commands = []
         let elements = post_req.cmds;
+        let delivery = post_req.delivery;
         for (let i=0; i<elements.length; i++){
             let prod_id = mongoose.Types.ObjectId(elements[i].prod_id);
             Prod.find({"_id": prod_id}).then(d =>{
+                    let data = d[0].toJSON(); // need to convert it to json to be able to add delivery property
+                    data.delivery = delivery;
                     Command.find({"_id": prod_id}).then(ez => {
-                        if (ez.length === 0) Command.insertMany(d).then();
+                        if (ez.length === 0) Command.insertMany(data).then();
                     })
                 }   
             )

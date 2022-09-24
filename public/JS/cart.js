@@ -12,6 +12,8 @@ for (let i=1; i<=ez; i++){
 
 function select_ch(){    
     select = document.getElementById("selected").value;
+    selected_elm = select.split(" ").slice(0, 3).join("");
+    console.log(selected_elm);
     document.getElementById("total_liv").innerHTML = "$ " + (parseFloat(sum) + parseFloat(select.split(" ")[5]) + ".00");
 }
 
@@ -20,7 +22,6 @@ function select_ch(){
 select_ch();
 
 document.getElementById("total").innerHTML = "$ " + sum + ".00";
-
 
 
 let form = document.getElementById("cart");
@@ -63,7 +64,7 @@ document.addEventListener("submit", (event)=>{
                 "quantity": prod_quantity
             })
         }
-        command = {"post_route": "/cart", "cmds": cmds}
+        command = {"post_route": "/cart", "cmds": cmds, "delivery": selected_elm}
     }
     fetch("/cart", {
         method: "POST",
